@@ -1,0 +1,22 @@
+{
+  "name": "vk-intersect",
+  "version": "1.0.0",
+  "description": "Servise, that allows you to find friends on vk.com\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[c",
+  "main": "index.js",
+  "dependencies": {
+    "array-intersection": "^0.1.2",
+    "express": "^4.14.0",
+    "vkapi": "^1.0.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": "4.4.x",
+    "npm": "2.15.x"
+  },
+  "scripts": {
+    "test": "test",
+    "start": "node app"
+  },
+  "author": "electricSemyon",
+  "license": "ISC"
+}

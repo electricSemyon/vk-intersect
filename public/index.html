@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Jquery test</title>
+		<link rel="stylesheet" href="css/style.css">
+		<script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<div id="mainContainer">
+			<h1>VK Intersect</h1>
+			<span class="description">Данный сервис позволит вам найти друзей вконтакте по общим интересам. Укажите список интересных вам групп, и вы получите список людей, которые в них сотоят одновременно.</span>
+
+			<input type="button" class="addGroupElement" value="Add Group">
+			<input type="button" class="deleteGroupElement" value="Delete Group">
+			<input type="button" class="submitButton" value="Submit">
+
+			<ul class="groupList">
+				<li class="groupListElement"><input type="text"></li>
+				<li class="groupListElement"><input type="text"></li>
+			</ul>
+			
+			<ul class="response"></ul>
+		</div>
+
+		<script>
+				$('.addGroupElement').click(function(){
+					if($('.groupList').children().length < 5){
+						$('.groupList').append('<li class="groupListElement"><input type="text"></li>');
+					}
+				})
+				$('.deleteGroupElement').click(function(){
+					if($('.groupList').children().length > 2){
+						$('.groupList li:last-child').remove();
+					}
+				})
+				$('.submitButton').click(function(){
+					var groups = [];
+
+					$('.groupList').children().map(function(i, el){
+						groups.push(el.firstChild.value)
+
+						if(i === $('.groupList').children().length - 1){
+							$.get('/getIntersections', { groups: groups }, function(data) { //{ groups: groups }
+							    console.log(data);
+							    data.map(function(i, el){
+							    	$('.response').append('<li class="responseGroupListElement"><a href = "vk.com">'+i+'</a></li>')
+							    })
+							});
+						}
+					})
+				})
+			</script>
+	</body>
+</html>
