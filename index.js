@@ -2,7 +2,7 @@
 const express = require('express');
 const core = require('./core');
 const app = express();
-const port = 80;
+const port = 3000;
 
 app.get('/getIntersections', function (req, res) {
   console.log('Ну ёб твою мать, ещё один. Обрабатываю...')
