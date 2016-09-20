@@ -20,7 +20,9 @@
 				<li class="groupListElement"><input type="text"></li>
 			</ul>
 			
-			<ul class="response"></ul>
+			<ul class="response">
+
+			</ul>
 		</div>
 
 		<script>
@@ -44,7 +46,7 @@
 							$.get('/getIntersections', { groups: groups }, function(data) { //{ groups: groups }
 							    console.log(data);
 							    data.map(function(i, el){
-							    	$('.response').append('<li class="responseGroupListElement"><a href = "vk.com">'+i+'</a></li>')
+							    	$('.response').append('<li class="responseGroupListElement"><a href = "http://vk.com/id'+i+'">vk.com/'+i+'</a></li>')
 							    })
 							});
 						}
