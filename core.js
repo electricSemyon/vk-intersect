@@ -84,10 +84,10 @@ function getIntersections(groupsArray, _callback) {
 	}
 }
 
-//process.on('uncaughtException', function (err) {
-//  console.error(err);
-  //console.log("Node NOT Exiting...");
-//});
+process.on('uncaughtException', function (err) {
+  console.error(err);
+  console.log("Node NOT Exiting...");
+});
 
 module.exports.getIntersections = getIntersections;
 //console.log(groupsArray)
