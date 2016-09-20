@@ -21,7 +21,6 @@ function intersect(array, _callback) {
             return intersections;
         }
     }
-    //console.log(intersections.length);
 }
 
 module.exports.intersect = intersect;

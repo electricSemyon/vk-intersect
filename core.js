@@ -17,15 +17,14 @@ const vk = new VK({
 });
 
 function getMillenium(offset, group_id, _callback, id) {
-	console.log(group_id + ' ' + offset)
 	vk.request('groups.getMembers', {
 		'group_id': group_id,
 		'offset': offset * 1000,
 		'count': 1000
 	}, 'done:groups.getMillenuim' + offset + group_id + functionCalls);
 
-	vk.on('done:groups.getMillenuim' + offset + group_id + functionCalls, function(_o) {
-		_callback(_o.response.users);
+	vk.on('done:groups.getMillenuim' + offset + group_id + functionCalls, function(res) {
+		_callback(res.response.users);
 	});
 }
 
@@ -40,8 +39,8 @@ function getMembers(group_id, _callback, id) {
 		'count': 0
 	}, 'done:groups.getMembers' + group_id + id + functionCalls);
 
-	vk.on('done:groups.getMembers' + group_id + id + functionCalls, function(_o) {
-		count = _o.response.count;
+	vk.on('done:groups.getMembers' + group_id + id + functionCalls, function(res) {
+		count = res.response.count;
 		if (count > 1000) iterations = (count - count % 1000) / 1000 + 1;
 		else iterations = 1;
 
@@ -54,7 +53,6 @@ function getMembers(group_id, _callback, id) {
 			if (i <= count) {
 				getMillenium(i, group_id, function(resp) {
 					arr = arr.concat(resp);
-					//console.log('loading...');
 					i++;
 					iter(i, count, pause);
 				}, id)
@@ -86,36 +84,7 @@ function getIntersections(groupsArray, _callback) {
 
 process.on('uncaughtException', function (err) {
   console.error(err);
-  console.log("Node NOT Exiting...");
+  console.log("Some exception!");
 });
 
 module.exports.getIntersections = getIntersections;
-//console.log(groupsArray)
-//getIntersections(groupsArray, console.log);
-
-///////////////////////////////[HOW IT WORKS]////////////////////////////////////
-
-
-
-/*
-let _arr = [
-	[],
-	[]
-];
-
-setTimeout(function funct() {
-	getMembers('cigarettesmokeyeah', function(arr) {
-		_arr[0] = arr;
-	});
-}, 0);
-
-setTimeout(function funct() {
-	getMembers('fukusakbichlife', function(arr) {
-		_arr[1] = arr;
-	});
-}, 1000);
-
-setTimeout(function funct() {
-	arrayIntersect.intersect(_arr);
-}, 3000);
-*/
