@@ -1,11 +1,5 @@
 'use strict'
-const groupsArray = [];
-const membersArray = [];
-
 let functionCalls = 0;
-
-groupsArray.push('cigarettesmokeyeah');
-groupsArray.push('chisto_dlya_menya');
 
 const arrayIntersect = require('./arrayIntersect');
 const VK = require('vkapi');
