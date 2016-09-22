@@ -43,17 +43,15 @@ function getMembers(group_id, _callback, id) {
 
 
 	function iter(i, count, pause) {
-		setTimeout(function funct() {
-			if (i <= count) {
-				getMillenium(i, group_id, function(resp) {
-					arr = arr.concat(resp);
-					i++;
-					iter(i, count, pause);
-				}, id)
-			}
-
-			if (i === count + 1) _callback(arr);
-		}, 300);
+        console.log(group_id + ' ' + i)
+		if (i <= count) {
+			getMillenium(i, group_id, function(resp) {
+				arr = arr.concat(resp);
+				i++;
+				iter(i, count, pause);
+			}, id)
+		}
+		if (i === count + 1) _callback(arr);
 	}
 }
 
