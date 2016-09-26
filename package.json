@@ -1,7 +1,7 @@
 {
     "name": "vk-intersect",
     "version": "1.0.0",
-    "description": "Servise, that allows you to find friends on vk.com\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[c",
+    "description": "Servise, that allows you to find friends on vk.com",
     "main": "index.js",
     "dependencies": {
         "dotenv": "^2.0.0",
