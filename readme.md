@@ -7,5 +7,5 @@ To start searching, we have to feed our service with list VKontakte groups. Jque
 ### Ongoing work
 - [ ] Make service a vk application
 - [ ] Speed up intersection algorithm
-- [ ] Move vk API credentials to .env file 
+- [x] Move vk API credentials to .env file 
 - [x] Update vk sdk module
