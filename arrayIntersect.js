@@ -3,6 +3,7 @@
 function intersect(array, _callback) {
     let iter = 1;
     let intersections = array[0];
+    
 
     while (iter < array.length) {
         let temp = [];

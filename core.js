@@ -1,24 +1,25 @@
 'use strict'
-let functionCalls = 0;
 
 const arrayIntersect = require('./arrayIntersect');
-const VK = require('vkapi');
+const VK = require('vksdk');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const vk = new VK({
-	'appID': 5579903,
-	'appSecret': 'vkRtsWFMX5X3pjgmZRsV',
+	'appId': process.env.APPID,
+	'appSecret': process.env.APPSECRET,
 	'mode': 'sig'
 });
+
+let functionCalls = 0;
 
 function getMillenium(offset, group_id, _callback, id) {
 	vk.request('groups.getMembers', {
 		'group_id': group_id,
 		'offset': offset * 1000,
 		'count': 1000
-	}, 'done:groups.getMillenuim' + offset + group_id + functionCalls);
-
-	vk.on('done:groups.getMillenuim' + offset + group_id + functionCalls, function(res) {
-		_callback(res.response.users);
+	}, function(res){
+		_callback(res.response.items);
 	});
 }
 
@@ -31,9 +32,7 @@ function getMembers(group_id, _callback, id) {
 	vk.request('groups.getMembers', {
 		'group_id': group_id,
 		'count': 0
-	}, 'done:groups.getMembers' + group_id + id + functionCalls);
-
-	vk.on('done:groups.getMembers' + group_id + id + functionCalls, function(res) {
+	}, function(res){
 		count = res.response.count;
 		if (count > 1000) iterations = (count - count % 1000) / 1000 + 1;
 		else iterations = 1;
@@ -43,16 +42,17 @@ function getMembers(group_id, _callback, id) {
 
 
 	function iter(i, count, pause) {
-        console.log(group_id + ' ' + i)
-		if (i <= count) {
-			getMillenium(i, group_id, function(resp) {
-				arr = arr.concat(resp);
-				i++;
-				iter(i, count, pause);
-			}, id)
-		}
-		if (i === count + 1) _callback(arr);
-	}
+ 			console.log(group_id + ' ' + i)
+ 			if (i <= count) {
+ 				getMillenium(i, group_id, function(resp) {
+ 					arr = arr.concat(resp);
+ 					i++;
+ 					iter(i, count, pause);
+ 				}, id)
+ 			}
+ 
+ 			if (i === count + 1) _callback(arr);
+ 	}
 }
 
 function getIntersections(groupsArray, _callback) {
@@ -68,7 +68,6 @@ function getIntersections(groupsArray, _callback) {
 
 		getMembers(groupsArray[i], function(a) {
 			_arr[i] = a;
-
 			execute(i + 1, count);
 		}, i);
 	}
