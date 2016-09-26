@@ -1,22 +1,21 @@
 'use strict'
 const express = require('express');
-const core = require('./core');
+const getIntersections = require('./getIntersections');
 const app = express();
 const port = process.env.PORT || 80;
 
 app.get('/getIntersections', function (req, res) {
-  console.log('Got one more reqest...')
-  const groups = req.query.groups;
+    console.log('Got one more reqest...')
+    const groups = req.query.groups;
 
-  core.getIntersections(groups, function(el){
-  	console.log(el);
-  
-  	res.send(el);
-  });
+    getIntersections(groups, function(el){
+       console.log(el);
+       res.send(el);
+    });
 });
 
 app.use(express.static('public'));
 
 app.listen(port, function () {
-  console.log('Server started on port ' + port + '!');
+    console.log('Server started on port ' + port + '!');
 });
