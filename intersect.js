@@ -1,23 +1,40 @@
 'use strict'
 
-function intersect(k, A)  // При вызовах всегда полагать k=0. А - это двумерный (!)
-{                                   //  массив, элементы которого A[ i ] - также массивы,
-    var n = A.length;               //  пересечение которых нужно найти.
+/**
+ * Finds intersections in array of arrays.
+ * @example
+ * // returns [1, 3]
+ * intersect(0, [[1, 2, 3], [1, 3, 3, 7]])
+ */
+function intersect(k, A)
+{
+    var n = A.length;
     if (k == n-2)
-       return intersectArrays( A[n-2], A[n-1] );   // Функцию IntersecArrays см. выше.
+       return intersectArrays( A[n-2], A[n-1] );
     else
        return intersectArrays( A[k], intersect(k+1,A) );   
 }
 
 function intersectArrays(A,B)
 {
-    var m = A.length, n = B.length, c = 0, C = [];
-    for (var i = 0; i < m; i++)
-     { var j = 0, k = 0;
-       while (B[j] !== A[ i ] && j < n) j++;
-       while (C[k] !== A[ i ] && k < c) k++;
-       if (j != n && k == c) C[c++] = A[ i ];
-     }
+    let m = A.length;
+    let n = B.length;
+    let c = 0;
+    let C = [];
+
+    for (let i = 0; i < m; i++)
+    { 
+        let j = 0;
+        let k = 0;
+
+        while (B[j] !== A[ i ] && j < n) 
+            j++;
+        while (C[k] !== A[ i ] && k < c) 
+            k++;
+
+        if (j != n && k == c) 
+            C[c++] = A[ i ];
+    }
    return C;
 }
 

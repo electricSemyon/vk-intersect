@@ -8,7 +8,6 @@ describe('#intersect()', function() {
         const arr2 = [6, 5, 8, 7, 1, 9, 4];
 
         const intersection = intersect(0, [arr1, arr2]);
-
-        assert.deepEqual([5, 1, 4], intersection);
+        assert.deepEqual([1, 4, 5], intersection);
     });
 });

@@ -6,11 +6,10 @@
   "dependencies": {
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
-    "mocha": "^3.0.2",
     "vksdk": "^5.3.2"
   },
   "devDependencies": {
-    
+    "mocha": "^3.0.2"
   },
   "engines": {
     "node": "4.4.x",
