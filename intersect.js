@@ -6,16 +6,20 @@
  * // returns [1, 3]
  * intersect(0, [[1, 2, 3], [1, 3, 3, 7]])
  */
-function intersect(k, A)
+function intersect (A)
 {
-    var n = A.length;
-    if (k == n-2)
-       return intersectArrays( A[n-2], A[n-1] );
-    else
-       return intersectArrays( A[k], intersect(k+1,A) );   
+    const iter = (k, A) => {
+        let n = A.length;
+        if (k === n - 2)
+           return intersectArrays(A[n - 2], A[n - 1]);
+        else
+           return intersectArrays(A[k], iter(k + 1,A));  
+    } 
+
+    return iter(0, A);
 }
 
-function intersectArrays(A,B)
+function intersectArrays (A,B)
 {
     let m = A.length;
     let n = B.length;
@@ -27,13 +31,13 @@ function intersectArrays(A,B)
         let j = 0;
         let k = 0;
 
-        while (B[j] !== A[ i ] && j < n) 
+        while (B[j] !== A[i] && j < n) 
             j++;
-        while (C[k] !== A[ i ] && k < c) 
+        while (C[k] !== A[i] && k < c) 
             k++;
 
         if (j != n && k == c) 
-            C[c++] = A[ i ];
+            C[c++] = A[i];
     }
    return C;
 }

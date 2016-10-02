@@ -65,7 +65,7 @@ function getIntersections(groupsArray, _callback) {
 
     function execute(i, count) {
         if (i === count) 
-            return _callback(intersect(0, _arr));
+            return _callback(intersect(_arr));
 
         getMembers(groupsArray[i], function(a) {
             _arr[i] = a;
