@@ -14,7 +14,7 @@
         <input type="button" value="Начать поиск" class="submit">
 
         <ul class="groupList">
-
+        
         </ul>
         
         <div class="popupContainer">
@@ -83,15 +83,7 @@
                                          name = name + '...';
                                     }
                                             
-                                    $('.groupList').append('<li class="groupItem" source="'+el.id+'"> +
-                                        <div class="checkerArea"> +
-                                        <input class="checkbox" type="checkbox"> +
-                                        </div><img src="' + el.photo_100 + '" alt="" class="avatar"> +
-                                        <div class="nonCheckerArea"> +
-                                        <a class="name" href = "https://vk.com/'+el.screen_name+'">' + name + 
-                                        '</a><span class="isClosed">' +
-                                        type + '</span><span class="'+valid+' memberCount">' +
-                                        memberCountString+'</span></div></li>');
+                                    $('.groupList').append('<li class="groupItem" source="'+el.id+'"><div class="checkerArea"><input class="checkbox" type="checkbox"></div><img src="' + el.photo_100 + '" alt="" class="avatar"><div class="nonCheckerArea"><a class="name" href = "https://vk.com/'+el.screen_name+'">' + name + '</a><span class="isClosed">' + type + '</span><span class="'+valid+' memberCount">'+memberCountString+'</span></div></li>');
                                 });
                             }, i * 400)
                         }
