@@ -8,8 +8,7 @@ dotenv.config();
 
 const vk = new VK({
     'appId': process.env.APPID,
-    'appSecret': process.env.APPSECRET,
-    'mode': 'sig'
+    'appSecret': process.env.APPSECRET
 });
 
 let functionCalls = 0;

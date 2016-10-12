@@ -1,59 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>VK Intersect</title>
-		<link rel="stylesheet" href="css/style.css">
-		<script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
-	</head>
-	<body>
-		<div id="mainContainer">
-			<h1>VK Intersect</h1>
-			<span class="description">Данный сервис позволит вам найти друзей вконтакте по общим интересам. 
-			Укажите список интересных вам групп, и вы получите список людей, которые в них 
-			сотоят одновременно.</span>
+    <head>
+        <meta charset="UTF-8">
+        <title>test</title>
+        <script   src="//code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+        <script src="//js.cx/babel-core/browser.min.js"></script>
+        <script src="//vk.com/js/api/xd_connection.js?2" type="text/javascript"></script>
+        <link rel="stylesheet" href="css/main.css">
 
-			<input type="button" class="addGroupElement" value="Add Group">
-			<input type="button" class="deleteGroupElement" value="Delete Group">
-			<input type="button" class="submitButton" value="Submit">
+        <span id="VKInfo"> </span>
+        
+        <span class="descr">Выберите несколько сообществ, по которым хотите искать:</span>
+        <input type="button" value="Начать поиск" class="submit">
 
-			<ul class="groupList">
-				<li class="groupListElement"><input type="text"></li>
-				<li class="groupListElement"><input type="text"></li>
-			</ul>
-			
-			<ul class="response">
+        <ul class="groupList">
 
-			</ul>
-		</div>
+        </ul>
+        
+        <div class="popupContainer">
+            <div class="popup">
+                <input type="button" value="Закрыть окно" class="closeModalWindow">
+                <ul class="userList">
+                
+                </ul>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            'use strict'
 
-		<script>
-				$('.addGroupElement').click(function(){
-					if($('.groupList').children().length < 5){
-						$('.groupList').append('<li class="groupListElement"><input type="text"></li>');
-					}
-				})
-				$('.deleteGroupElement').click(function(){
-					if($('.groupList').children().length > 2){
-						$('.groupList li:last-child').remove();
-					}
-				})
-				$('.submitButton').click(function(){
-					var groups = [];
+            let groups = [];
+            let users = [];
 
-					$('.groupList').children().map(function(i, el){
-						groups.push(el.firstChild.value)
+            VK.init(function() { 
+                const params = getQueryParams(window.location);
 
-						if(i === $('.groupList').children().length - 1){
-							$.get('/getIntersections', { groups: groups }, function(data) { //{ groups: groups }
-							    console.log(data);
-							    data.map(function(i, el){
-							    	$('.response').append('<li class="responseGroupListElement"><a href = "http://vk.com/id'+i+'">vk.com/'+i+'</a></li>')
-							    })
-							});
-						}
-					})
-				})
-			</script>
-	</body>
+                $('.submit').click(function() {
+                    groups = [];
+                    getAllCheckedElements('.groupList', groups, function(arr) {
+                        console.log(arr);
+
+                        $('.popupContainer').css('display', 'block')
+                        $('.userList').append('<li>Это может занять до нескольких минут...</li>');
+                        
+                        $.get('/getIntersections', { groups: groups }, function(data) {
+                            $('.userList').empty();
+                            data.map(function(el, i) {
+                                setTimeout(function() {
+                                    VK.api('users.get', 
+                                    {'user_ids': el, 'fields': 'photo_50,city,verified'}, function(r) {
+                                        console.log(r);
+                                        $('.userList').append(userInfo(r.response[0].photo_50, r.response[0].id, r.response[0].first_name + " " + r.response[0].last_name))
+                                    });
+                                }, i * 300);
+                            })
+                        });
+                    })
+                });
+
+                $('.closeModalWindow').click(function() {
+                    $('.popupContainer').css('display', 'none');
+                    $('.userList').empty();
+                });
+
+                VK.api('groups.get', {'user_id': params['user_id'], 'extended': true}, function(r) {
+                    r.response.items.map(function(el, i) {
+                        if(i > 0) {
+                            setTimeout(function() {
+                                VK.api('groups.getMembers', 
+                                { 'group_id': el.screen_name, 'count': 0 }, 
+                                function(_r) {
+                                    const maxMembersCount = 100000;
+                                    const respCount = _r.response.count;
+                                    const type = el.type == 'page' ? 'Паблик' : 'Группа';
+                                    let name = el.name;
+                                    let memberCountString = respCount + (el.type == 'page' ? ' подписчиков' : ' участников');
+                                    memberCountString += respCount > maxMembersCount ? ' (не рекомендуется)' : '';
+                                    const valid = respCount > maxMembersCount ? 'notValidGroup' : 'validGroup';
+
+                                    if(name.length > 35){
+                                        name = name.slice(0, 35);
+                                         name = name + '...';
+                                    }
+                                            
+                                    $('.groupList').append('<li class="groupItem" source="'+el.id+'"> +
+                                        <div class="checkerArea"> +
+                                        <input class="checkbox" type="checkbox"> +
+                                        </div><img src="' + el.photo_100 + '" alt="" class="avatar"> +
+                                        <div class="nonCheckerArea"> +
+                                        <a class="name" href = "https://vk.com/'+el.screen_name+'">' + name + 
+                                        '</a><span class="isClosed">' +
+                                        type + '</span><span class="'+valid+' memberCount">' +
+                                        memberCountString+'</span></div></li>');
+                                });
+                            }, i * 400)
+                        }
+                    })
+                });
+
+              }, function() {  }, '5.57'); 
+
+            const getQueryParams = (qs) => {
+                qs = qs + '';
+                qs = qs.split('+').join(' ');
+
+                let params = {},
+                    tokens,
+                    re = /[?&]?([^=]+)=([^&]*)/g;
+
+                while (tokens = re.exec(qs)) {
+                    params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+                }
+
+                return params;
+            }
+
+            const getAllCheckedElements = (className, arr, _callback) => {
+                $(className).children().map(function(i, el){
+                    if (el.children[0].children[0].checked) {
+                        //$(el).css('background-color', '#dfd')
+                        arr.push($(el).attr('source'));
+                    }
+                    if (i === $(className).children().length - 1) {
+                        _callback(groups)
+                    }
+                })
+            }
+
+            const userInfo = (photo_50, id, name) => {
+                return '<li class="userElement">' +
+                        '<img src="' + photo_50 + '" alt="" class="avatar">' +
+
+                        '<div class="info">' +
+                            '<a class="name" href="https://vk.com/id' + id + '">' + name + '</a>' +
+                        '</div>' +
+                    '</li>'
+            }
+        </script>
+    </head>
+    <body>
+        
+    </body>
 </html>
