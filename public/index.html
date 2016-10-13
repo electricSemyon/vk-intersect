@@ -43,18 +43,22 @@
                         $('.popupContainer').css('display', 'block')
                         $('.userList').append('<li>Это может занять до нескольких минут...</li>');
                         
-                        $.get('/getIntersections', { groups: groups }, function(data) {
-                            $('.userList').empty();
-                            data.map(function(el, i) {
-                                setTimeout(function() {
-                                    VK.api('users.get', 
-                                    {'user_ids': el, 'fields': 'photo_50,city,verified'}, function(r) {
-                                        console.log(r);
-                                        $('.userList').append(userInfo(r.response[0].photo_50, r.response[0].id, r.response[0].first_name + " " + r.response[0].last_name))
-                                    });
-                                }, i * 300);
-                            })
-                        }, timeout: 60000);
+                        $.ajax({
+                            url: '/getIntersections', 
+                            data: { groups: groups }, 
+                            success: function(data) {
+                                $('.userList').empty();
+                                data.map(function(el, i) {
+                                    setTimeout(function() {
+                                        VK.api('users.get', 
+                                        {'user_ids': el, 'fields': 'photo_50,city,verified'}, function(r) {
+                                            console.log(r);
+                                            $('.userList').append(userInfo(r.response[0].photo_50, r.response[0].id, r.response[0].first_name + " " + r.response[0].last_name))
+                                        });
+                                    }, i * 300);
+                                })
+                            }, 
+                            timeout: 60000 });
                     })
                 });
 
