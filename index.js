@@ -45,4 +45,4 @@ app.get('/getIntersections', function (req, res) {
 	}
 });
 
-httpServer.listen(8080);
+httpServer.listen(port);
