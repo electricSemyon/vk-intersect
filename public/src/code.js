@@ -17,22 +17,25 @@ VK.init(function() {
             $('.popupContainer').css('display', 'block')
             $('.userList').append('<li>Это может занять до нескольких минут...</li>');
 
-            knock('getIntersections', { groups: groups }, 
+            knock('getIntersections', {
+                    groups: groups
+                },
                 function(res) {
                     //console.log(res)
                     $('.userList').empty();
                     res.data.map(function(el, i) {
                         setTimeout(function() {
-                            VK.api('users.get', {
-                                'user_ids': el,
-                                'fields': 'photo_50,city,verified'
-                            }, function(r) {
-                                if(r) {
+                            VK.api('users.get', { 'user_ids': el, 'fields': 'photo_50,city,verified' }, 
+                                function(r) {
                                     console.log(r);
-                                    $('.userList').append(userInfo(r.response[0].photo_50, r.response[0].id, r.response[0].first_name + " " + r.response[0].last_name))
+                                    $('.userList').append(userInfo(
+                                        r.response[0].photo_50, 
+                                        r.response[0].id, 
+                                        r.response[0].first_name + 
+                                        " " + r.response[0].last_name))
                                 }
-                            });
-                        }, i * 500);
+                            );
+                        }, i * 400);
                     })
                 });
         });
@@ -119,29 +122,26 @@ function knock(url, data, _callback) {
     let finished = false;
 
     for (let i = 0; i < maxIterations; i++) {
-        
+
         setTimeout(function() {
             if (!finished) {
                 console.log('knock')
                 if (i === 0) {
-                        query(data, url, function(res) {
-                            token = res.token;
-                            console.log(res)
-                        })
+                    query(data, url, function(res) {
+                        token = res.token;
+                        console.log(res)
+                    })
                 } else {
-                        query({
-                            token: token
-                         }, url, function(res) {
-                            console.log(res)
-                            if (res.data) {
-                                finished = true;
-                                return _callback(res);
-                            }
-                         });
+                    query({
+                        token: token
+                    }, url, function(res) {
+                        console.log(res)
+                        if (res.data) {
+                            finished = true;
+                            return _callback(res);
+                        }
+                    });
                 }
-            }
-            else {
-                return;
             }
         }, i * delay)
     }
