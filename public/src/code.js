@@ -117,6 +117,10 @@ const userInfo = (photo_50, id, name) => {
         '</li>'
 }
 
+const errorMessage = () => {
+    return '<li class="userElement">Истекло время ожидание ответа сервера. Попробуйте выбрать группы с меньшим кол-во людей.</li>';
+}
+
 function knock(url, data, _callback) {
     let token;
     let finished = false;
@@ -141,6 +145,11 @@ function knock(url, data, _callback) {
                             return _callback(res);
                         }
                     });
+                }
+            
+                if(i === maxIterations - 1) {
+                    $('.userList').empty();
+                    $('.userList').append(errorMessage());
                 }
             }
         }, i * delay)
